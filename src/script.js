@@ -17,6 +17,7 @@ const newsDotsContainerEl = document.querySelector('.news__dots');
 let heroIndex = 0;
 let partnersIndex = 0;
 let newsIndex = 0;
+let windowWidth = window.innerWidth;
 const heroMaxIndex = herosEl.length - 1;
 const partnersMaxIndex = partnersEl.length - 1;
 const newsMaxIndex = newsCardsEl.length - 1;
@@ -41,6 +42,11 @@ const newsMaxIndex = newsCardsEl.length - 1;
     newsDotsContainerEl.append(dotEl);
   }
 })();
+
+window.addEventListener('resize', () => {
+  windowWidth = window.innerWidth;
+  setBarPosition();
+});
 
 const partnerDotsEl = document.querySelectorAll('.partner--dot');
 const newsDotsEl = document.querySelectorAll('.news--dot');
@@ -78,7 +84,17 @@ topEl.addEventListener('click', () => {
 
 barBtnsEl.forEach((barBtnEl) => {
   barBtnEl.addEventListener('click', () => {
-    barEl.classList.toggle('bar-show');
+    const barTransform = barEl.style.transform;
+    if (barTransform.includes('100%')) {
+      toggleShowBar('0%');
+    } else {
+      if (windowWidth < 768) {
+        toggleShowBar('-100%');
+      } else {
+        toggleShowBar('100%');
+      }
+    }
+    barEl.classList.toggle('show-bar');
   });
 });
 
@@ -124,11 +140,25 @@ function sliderMove(currentEl, currentIndex) {
 }
 sliderMove(herosEl, heroIndex);
 sliderMove(partnersEl, partnersIndex);
+sliderMove(newsCardsEl, newsIndex);
 
 function removeDotsClass(currentEl) {
   currentEl.forEach((dotEl) => {
     dotEl.classList.remove('dot--active');
   });
+}
+function setBarPosition() {
+  if (windowWidth < 768) {
+    barEl.style = 'left:0;';
+    toggleShowBar('-100%');
+    return;
+  }
+  barEl.style = 'right:0;';
+  toggleShowBar('100%');
+}
+setBarPosition();
+function toggleShowBar(unit) {
+  barEl.style.transform = `translateX(${unit})`;
 }
 
 function moveY(element, top) {
