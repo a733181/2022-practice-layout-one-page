@@ -1,5 +1,4 @@
 gsap.registerPlugin(ScrollTrigger);
-const headerEl = document.querySelector('.header');
 const barBtnsEl = document.querySelectorAll('.bar-btn');
 const barEl = document.querySelector('.bar');
 const topEl = document.querySelector('.top');
@@ -18,6 +17,7 @@ let heroIndex = 0;
 let partnersIndex = 0;
 let newsIndex = 0;
 let windowWidth = window.innerWidth;
+
 const heroMaxIndex = herosEl.length - 1;
 const partnersMaxIndex = partnersEl.length - 1;
 const newsMaxIndex = newsCardsEl.length - 1;
@@ -51,7 +51,7 @@ window.addEventListener('resize', () => {
 const partnerDotsEl = document.querySelectorAll('.partner--dot');
 const newsDotsEl = document.querySelectorAll('.news--dot');
 
-gsap.to(headerEl, {
+gsap.to('.header', {
   backgroundColor: '#2d3134',
   scrollTrigger: {
     toggleActions: 'play pause resume reset',
@@ -65,13 +65,18 @@ gsap.to(topEl, {
   },
 });
 
-moveY('.connectionus', '80%');
-moveY('.help__cards', '90%');
+createScroll({ element: '.connectionus', start: '80%', moveY: true });
+createScroll({ element: '.help__cards', start: '90%', moveY: true });
+createScroll({ element: '.number--save', start: '80%', number: 50 });
+createScroll({ element: '.number--team', start: '80%', number: 30 });
+createScroll({ element: '.number--daily', start: '80%', number: 25 });
+createScroll({ element: '.number--partners', start: '80%', number: 60 });
+
 titlesEl.forEach((titleEl) => {
-  moveY(titleEl, '60%');
+  createScroll({ element: titleEl, start: '40%', moveY: true });
 });
 saveCardsEl.forEach((saveCardEl) => {
-  moveY(saveCardEl, '60%');
+  createScroll({ element: saveCardEl, start: '60%', moveY: true });
 });
 
 topEl.addEventListener('click', () => {
@@ -124,6 +129,7 @@ partnerDotsEl.forEach((dotEl, index) => {
     sliderMove(partnersEl, partnersIndex);
   });
 });
+
 newsDotsEl.forEach((dotEl, index) => {
   dotEl.addEventListener('click', () => {
     newsIndex = index;
@@ -147,6 +153,7 @@ function removeDotsClass(currentEl) {
     dotEl.classList.remove('dot--active');
   });
 }
+
 function setBarPosition() {
   if (windowWidth < 768) {
     barEl.style = 'left:0;';
@@ -157,18 +164,40 @@ function setBarPosition() {
   toggleShowBar('100%');
 }
 setBarPosition();
+
 function toggleShowBar(unit) {
   barEl.style.transform = `translateX(${unit})`;
 }
 
-function moveY(element, top) {
-  gsap.to(element, {
+function createScroll(obj) {
+  const animation = obj.moveY ? moveY(obj.element) : '';
+  ScrollTrigger.create({
+    trigger: obj.element,
+    start: `top ${obj.start}`,
+    toggleActions: 'play pause none none',
+    animation,
+    onEnter: () => {
+      if (!obj.number) return;
+      countNumber(obj.element, obj.number);
+    },
+  });
+}
+
+function moveY(element) {
+  return gsap.to(element, {
     y: 0,
     opacity: 1,
-    scrollTrigger: {
-      trigger: element,
-      start: `top ${top}`,
-      toggleActions: 'play pause none none',
+  });
+}
+
+function countNumber(element, number) {
+  let Cont = { val: 0 };
+  const elementEl = document.querySelector(element);
+  TweenLite.to(Cont, 5, {
+    val: number,
+    roundProps: 'val',
+    onUpdate: () => {
+      elementEl.innerHTML = Cont.val;
     },
   });
 }
