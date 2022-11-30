@@ -73,7 +73,7 @@ createScroll({ element: '.number--daily', start: '80%', number: 25 });
 createScroll({ element: '.number--partners', start: '80%', number: 60 });
 
 titlesEl.forEach((titleEl) => {
-  createScroll({ element: titleEl, start: '40%', moveY: true });
+  createScroll({ element: titleEl, start: '60%', moveY: true });
 });
 saveCardsEl.forEach((saveCardEl) => {
   createScroll({ element: saveCardEl, start: '60%', moveY: true });

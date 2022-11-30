@@ -180,8 +180,9 @@ img {
   color: white;
   text-transform: uppercase;
   font-weight: bold;
-  top: 30%;
+  top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
 }
 .hero__sidebar__item__words--title--first {
   font-size: 6rem;
@@ -193,7 +194,6 @@ img {
   font-size: 3rem;
 }
 .hero__sidebar__item__words--text {
-  width: 80%;
   font-weight: normal;
 }
 .hero__sidebar__item--img {
@@ -713,7 +713,12 @@ img {
     object-position: 20% 50%;
   }
   .hero__sidebar__item__words {
+    top: 30%;
     left: 60%;
+    transform: translate(0);
+  }
+  .hero__sidebar__item__words--text {
+    width: 80%;
   }
   /* connectionus */
   .connectionus__form {
